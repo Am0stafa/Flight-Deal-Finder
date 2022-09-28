@@ -3,10 +3,11 @@ import requests
 TEQUILA_ENDPOINT = "https://tequila-api.kiwi.com"
 TEQUILA_API_KEY = "-pIBIVEFvEJOCrtHA190XzSEF0WQQcio"
 from flight_data import FlightData
+from notification_manager import NotificationManager
 
 class FlightSearch:
     def __init__(self):
-        pass
+        self.notification = NotificationManager()
         
     def getDestinationCode(self, city_name):
         location_endpoint = f"{TEQUILA_ENDPOINT}/locations/query"
@@ -16,8 +17,14 @@ class FlightSearch:
         results = response.json()["locations"]
         code = results[0]["code"]
         return code
-    # A single flights search.
-    def checkFlights(self, origin_city_code, destination_city_code, from_time, to_time):
+        
+    #^ A single flights search.
+    #* automatically search all the flight in  this data rage and return the cheapest one
+    def checkFlights(self, origin_city_code, destination_city_code, from_time, to_time,cheapest):
+        """
+         we're looking only for direct flights, that leave anytime between tomorrow and in 6 months (6x30days) time. We're also looking for round trips that return between 7 and 28 days in length. The currency of the price we get back should be in GBP.
+        """
+    
         headers = {"apikey": TEQUILA_API_KEY}
         query = {
             "fly_from": origin_city_code,
@@ -56,7 +63,10 @@ class FlightSearch:
             out_date=data["route"][0]["local_departure"].split("T")[0],
             return_date=data["route"][1]["local_departure"].split("T")[0]
         )
-        print(flight_data.getData())
+        if flight_data.price < cheapest:
+            # self.notification.send_sms(flight_data.getMessage())
+            print(flight_data.getMessage())
+            
         
         return flight_data
         

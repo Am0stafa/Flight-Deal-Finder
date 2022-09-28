@@ -11,3 +11,7 @@ class FlightData:
         
     def getData(self):
         return f"{self.destination_city}: £{self.price}"
+        
+    def getMessage(self):
+        return f"Low price alert! Only £{self.price} to fly from {self.origin_city}-{self.origin_airport} to {self.destination_city}-{self.destination_airport}, from {self.out_date} to {self.return_date}."
+

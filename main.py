@@ -12,4 +12,4 @@ six_month_from_today = datetime.now() + timedelta(days=(6 * 30)) #* search fligh
 sheetData = data.populateIATA()
 
 for i in sheetData:
-    flight.checkFlights(ORIGIN_CITY_IATA, i['iataCode'], from_time=tomorrow, to_time=six_month_from_today)
+    flight.checkFlights(ORIGIN_CITY_IATA, i['iataCode'], from_time=tomorrow, to_time=six_month_from_today,cheapest=i['lowestPrice'])
