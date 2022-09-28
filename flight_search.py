@@ -64,8 +64,8 @@ class FlightSearch:
             return_date=data["route"][1]["local_departure"].split("T")[0]
         )
         if flight_data.price < cheapest:
-            # self.notification.send_sms(flight_data.getMessage())
-            print(flight_data.getMessage())
+            self.notification.sendSMS(flight_data.getMessage())
+            print("deal found")
             
         
         return flight_data
